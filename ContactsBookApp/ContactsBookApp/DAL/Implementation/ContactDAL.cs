@@ -23,6 +23,7 @@ namespace ContactsBookApp.DAL.Implementation
             {
                 var contact = new ContactDTO()
                 {
+                    Id = model.Id,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     Email = model.Email,

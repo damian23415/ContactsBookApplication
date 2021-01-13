@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ContactsBookApp.DAL;
+using ContactsBookApp.DAL.Implementation;
+using ContactsBookApp.DAL.Interfaces;
+using ContactsBookApp.DTO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +32,9 @@ namespace ContactsBookApp
         {
             services.AddControllers();
             services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ContactsBookConnection")));
+
+            services.AddScoped<ContactDTO>();
+            services.AddScoped<IContactDAL, ContactDAL>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
