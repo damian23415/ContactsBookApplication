@@ -1,0 +1,49 @@
+<html>
+    <header>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js" type="text/javascript"></script>
+    </header>
+    
+    <body>
+        <div data-bind="text: firstName"></div>
+        <p>First Name</p><input data-bind="value: firstName" />
+        <p>Last Name</p><input data-bind="value: lastName" />
+        <p>Email</p><input data-bind="value: email" />
+        <p>Phone Number</p><input data-bind="value: phoneNumber" />
+        <p>Address</p><input data-bind="value: address" />
+        <p>City</p><input data-bind="value: city" />
+        <p>Zipp</p><input data-bind="value: zipp" />
+    </body>
+
+    <script type="text/javascript">
+
+        function Contact(data)
+        {
+            this.firstName = ko.observable(data.firstName);
+            this.lastName = ko.observable(data.lastName);
+            this.email = ko.observable(data.email);
+            this.phoneNumber = ko.observable(data.phoneNumber);
+            this.address = ko.observable(data.address);
+            this.city = ko.observable(data.city);
+            this.zipp = ko.observable(data.zipp);
+        }
+
+        function ContactListViewModel() {
+            var self = this;
+            self.contacts = ko.observableArray([]);
+            self.firstName = ko.observable(),
+            self.lastName = ko.observable(),
+            self.email = ko.observable(),
+            self.phoneNumber = ko.observable(),
+            self.address = ko.observable(),
+            self.city = ko.observable(),
+            self.zipp = ko.observable()
+
+            $.getJSON("https://localhost:44329/api/Contact/CreateContact", function(allData) {
+                var mappedContacts = $.map(allData, function(item) {return new Contact(item)});
+                self.contacts(mappedContacts);
+            })
+        }
+        
+        ko.applyBindings(new ContactListViewModel());
+    </script>
+</html>
