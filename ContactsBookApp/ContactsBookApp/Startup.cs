@@ -20,6 +20,8 @@ namespace ContactsBookApp
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,8 +34,14 @@ namespace ContactsBookApp
         {
             services.AddControllers();
             services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("ContactsBookConnection")));
-
-            services.AddScoped<ContactDTO>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  builder =>
+                                  {
+                                      builder.WithOrigins("https://localhost:44329/api/Contact/GetContacts").AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin();
+                                  });
+            });
             services.AddScoped<IContactDAL, ContactDAL>();
         }
 
@@ -44,6 +52,7 @@ namespace ContactsBookApp
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseHttpsRedirection();
 

@@ -65,5 +65,12 @@ namespace ContactsBookApp.Controllers
             return Ok(contact);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Filter(string searchString)
+        {
+            var contacts = await _contactDAL.Filter(searchString);
+            return Ok(contacts);
+        }
+
     }
 }

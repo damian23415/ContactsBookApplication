@@ -69,5 +69,16 @@ namespace ContactsBookApp.DAL.Implementation
                 return await _ctx.Contacts.Select(x => x).ToListAsync();
             }
         }
+
+        public async Task<List<ContactDTO>> Filter(string searchString)
+        {
+            using(_ctx)
+            {
+                var contacts = _ctx.Contacts.Where(x => x.Email.Contains(searchString.Trim())).ToListAsync();
+
+                return await contacts;
+            }
+        }
+
     }
 }
