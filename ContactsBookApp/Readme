@@ -1,1 +1,12 @@
+# It's contacts book app
 
+It is the server part of the application. This application allows us to create a phone book. We can add contacts to it, edit existing ones and filter contacts by email address.
+
+## How to run it?
+**To run the project**
+1.  in the xxx program, create a database called ContactsBook and import it from the "DbBackup" file.
+2. Then we download the project from github and run it.
+3. In the appsettings.json file in the ConnectionStrings section, we add our own connection string with data to the previously created database.
+4. We have to run the project.
+5. To check the application's capabilities, it is best to refer to the desired endpoint using the postman program.
+6. E.g. yourLocalHostAddres / api / Contact / GetContacts
