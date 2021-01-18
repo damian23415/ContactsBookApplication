@@ -6,14 +6,13 @@
     <body>
         <h1>Dane z zewnątrz</h1>
         <form action="#" method="POST">
-            <p>First name: <input data-bind='text: firstName' /></p>
-            <p>Last name: <input data-bind='value: lastName' /></p>
-            <p>Email: <input data-bind='value: email' /></p>
-            <p>Phone number: <input data-bind='value: phoneNumber' /></p>
-            <p>Address: <input data-bind='value: address' /></p>
-            <p>City: <input data-bind='value: city' /></p>
-            <p>Zipp: <input data-bind='value: zipp' /></p>
-            <select data-bind='options: contacts, value: contacts[0].firstName'></select>
+            <p>First name: <span data-bind='text: firstName'></span></p>
+            <p>Last name: <span data-bind='text: lastName'></span></p>
+            <p>Email: <span data-bind='text: email'></span></p>
+            <p>Phone number: <span data-bind='text: phoneNumber'></span></p>
+            <p>Address: <span data-bind='text: address'></span></p>
+            <p>City: <span data-bind='text: city'></span></p>
+            <p>Zipp: <span data-bind='text: zipp'></span></p>
             <button data-bind='saveUserData'>Zapisz dane</button>
         </form>
 
@@ -23,30 +22,26 @@
 
         <script type="text/javascript">
 
-            function PersonViewModel() {
-                var self = this;
-                self.contacts = ko.observableArray([]),
-                self.firstName = ko.observable(""),
-                self.lastName = ko.observable(""),
-                self.email = ko.observable(""),
-                self.phoneNumber = ko.observable(""),
-                self.address = ko.observable(""),
-                self.city = ko.observable(""),
-                self.zipp = ko.observable("")
+            var viewModel = {
+                firstName = ko.observable(),
+                lastName = ko.observable(),
+                email = ko.observable(),
+                phoneNumber = ko.observable(),
+                address = ko.observable(),
+                city = ko.observable(),
+                zipp = ko.observable()
+            }
+                // self.saveUserData = function() {
+                //     var data_to_send = {userData: ko.toJSON(self)};
+                //     $.post("https://localhost:44329/api/Contact/CreateContact", data_to_send, function(data) {
+                //         alert("Saved data in server")
+                //     })
+                // }
 
-                self.saveUserData = function() {
-                    var data_to_send = {userData: ko.toJSON(self)};
-                    $.post("https://localhost:44329/api/Contact/CreateContact", data_to_send, function(data) {
-                        alert("Saved data in server")
-                    })
-                }
-
-                $.getJSON("https://localhost:44329/api/Contact/GetContacts", function(data) {
-                    var viewModel = ko.mapping.fromJS(data);
-                    ko.applyBindings(viewModel);
-                });
-            }            
-
+            $.getJSON("https://localhost:44329/api/Contact/GetContact?id=7", function(data) {
+                var viewModel = ko.mapping.fromJS(data, viewModel);
+                ko.applyBindings(viewModel);
+            });
 
         </script>
     </body>

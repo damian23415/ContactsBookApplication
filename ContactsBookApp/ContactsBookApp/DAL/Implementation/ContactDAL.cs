@@ -80,5 +80,15 @@ namespace ContactsBookApp.DAL.Implementation
             }
         }
 
+        public async Task<ContactDTO> GetOneContact(int id)
+        {
+            using(_ctx)
+            {
+                var contact = _ctx.Contacts.Where(x => x.Id == id).FirstOrDefault();
+
+                return  contact;
+            }
+        }
+
     }
 }

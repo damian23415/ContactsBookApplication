@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    </head>
+    
+    <body>
+        <h1>Dane z zewnątrz</h1>
+            <p>First name: <span data-bind='text: firstName'></span></p>
+            <p>Last name: <span data-bind='text: lastName'></span></p>
+            <p>Email: <span data-bind='text: email'></span></p>
+            <p>Phone number: <span data-bind='text: phoneNumber'></span></p>
+            <p>Address: <span data-bind='text: address'></span></p>
+            <p>City: <span data-bind='text: city'></span></p>
+            <p>Zipp: <span data-bind='text: zip'></span></p>
+            <button data-bind='saveUserData'>Zapisz dane</button>
+
+            <!-- <form action="POST">
+                <p>First name: <input data-bind="value: firstName" ></p>
+                <p>Last name: <input data-bind="value: lastName" ></p>
+                <p>Email: <input data-bind="value: email" ></p>
+                <p>Phone number: <input data-bind="value: phoneNumber" ></p>
+                <p>Address: <input data-bind="value: address" ></p>
+                <p>City: <input data-bind="value: city" ></p>
+                <p>Zip code: <input data-bind="value: zip" ></p>
+                <button data-bind='click: save'>Zapisz dane</button>
+            </form> -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js" type="text/javascript"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script src="knockout.mapping-latest.js"></script>
+
+        <script type="text/javascript">
+
+            var viewModel = {
+                firstName: ko.observable(""),
+                lastName: ko.observable(""),
+                email: ko.observable(""),
+                phoneNumber: ko.observable(""),
+                address: ko.observable(""),
+                city: ko.observable(""),
+                zip: ko.observable("")
+            }
+            // var save = function() {
+            //     var dataSend = ko.mapping.toJS(viewModel);
+            //     $.post("https://localhost:44329/api/Contact/CreateContact", dataSend, function(data) {
+            //         alert("Saved data in server");
+            //     })
+            //     ko.applyBindings(viewModel);
+            // }
+
+            $.getJSON("https://localhost:44329/api/Contact/GetContact?id=7", function(data) {
+                var viewModel = ko.mapping.fromJS(data)
+                ko.applyBindings(viewModel);
+            });
+
+
+        </script>
+    </body>
+
+</html>

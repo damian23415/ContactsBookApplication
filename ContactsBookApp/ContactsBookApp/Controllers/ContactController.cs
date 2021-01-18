@@ -72,5 +72,12 @@ namespace ContactsBookApp.Controllers
             return Ok(contacts);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetContact(int id)
+        {
+            var contact = await _contactDAL.GetOneContact(id);
+            return Ok(contact);
+        }
+
     }
 }
