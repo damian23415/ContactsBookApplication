@@ -4,45 +4,95 @@
     </head>
     
     <body>
-        <h1>Dane z zewnątrz</h1>
-        <form action="#" method="POST">
+        <!-- <h1>Dane z zewnątrz</h1>
             <p>First name: <span data-bind='text: firstName'></span></p>
             <p>Last name: <span data-bind='text: lastName'></span></p>
             <p>Email: <span data-bind='text: email'></span></p>
             <p>Phone number: <span data-bind='text: phoneNumber'></span></p>
             <p>Address: <span data-bind='text: address'></span></p>
             <p>City: <span data-bind='text: city'></span></p>
-            <p>Zipp: <span data-bind='text: zipp'></span></p>
-            <button data-bind='saveUserData'>Zapisz dane</button>
-        </form>
+            <p>Zipp: <span data-bind='text: zip'></span></p> -->
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js" type="text/javascript"></script>
+
+            <h2>Try 2</h2>
+            <ul data-bind="foreach: contacts">
+                <li>
+                  
+                    First name <input data-bind="value: firstName"> <br>
+                    Last name <input data-bind="value: lastName"><br>
+                    Email <input data-bind="value: email"><br>
+                    Phone number<input data-bind="value: phoneNumber"><br>
+                    Address <input data-bind="value: address"><br>
+                    City <input data-bind="value: city"><br>
+                    Zip <input data-bind="value: zip"><br>
+                </li>
+            </ul>
+            <button id="btnWczytaj">Wczytaj dane</button>
+
+            <button id="btnZapisz">Zapisz dane</button> <br>
+                    First name <input data-bind="value: firstName"> <br>
+                    Last name <input data-bind="value: lastName"><br>
+                    Email <input data-bind="value: email"><br>
+                    Phone number<input data-bind="value: phoneNumber"><br>
+                    Address <input data-bind="value: address"><br>
+                    City <input data-bind="value: city"><br>
+                    Zip <input data-bind="value: zip"><br>
+
+
         <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.5.1/knockout-latest.js" type="text/javascript"></script>
         <script src="knockout.mapping-latest.js"></script>
 
-        <script type="text/javascript">
+        <script>
 
-            var viewModel = {
-                firstName = ko.observable(),
-                lastName = ko.observable(),
-                email = ko.observable(),
-                phoneNumber = ko.observable(),
-                address = ko.observable(),
-                city = ko.observable(),
-                zipp = ko.observable()
+            function Contact(data)
+            {
+
+                this.firstName = ko.observable(data.firstName);
+                this.lastName = ko.observable(data.lastName);
+                this.email = ko.observable(data.email);
+                this.phoneNumber = ko.observable(data.phoneNumber);
+                this.address = ko.observable(data.address);
+                this.city = ko.observable(data.city);
+                this.zip =  ko.observable(data.zip);
             }
-                // self.saveUserData = function() {
-                //     var data_to_send = {userData: ko.toJSON(self)};
-                //     $.post("https://localhost:44329/api/Contact/CreateContact", data_to_send, function(data) {
-                //         alert("Saved data in server")
-                //     })
-                // }
 
-            $.getJSON("https://localhost:44329/api/Contact/GetContact?id=7", function(data) {
-                var viewModel = ko.mapping.fromJS(data, viewModel);
-                ko.applyBindings(viewModel);
-            });
 
+            function ContactListViewModel()
+            {
+                var self = this;
+                self.contacts = ko.observableArray([]);
+                
+                self.firstName = ko.observable();
+                self.lastName = ko.observable();
+                self.email = ko.observable();
+                self.phoneNumber = ko.observable();
+                self.address = ko.observable();
+                self.city = ko.observable();
+                self.zip = ko.observable();
+
+                $(document).ready(function() {
+                    $("#btnWczytaj").click(function() {
+                        $.getJSON("https://localhost:44329/api/Contact/GetContacts", function(allData) {
+                            var mappedContacts = $.map(allData, function(item) { return new Contact(item)})
+                            self.contacts(mappedContacts);
+                        });
+                    });
+
+                    $("#btnZapisz").click(function() {
+                        $.ajax({
+                            data: ko.toJSON(self),
+                            url: "https://localhost:44329/api/Contact/CreateContact",
+                            type: "post", 
+                            contentType: "application/json",
+                            success: function(result) {alert(result)}
+                        });
+                    });
+                })
+            }
+
+            ko.applyBindings(new ContactListViewModel());
+            
         </script>
     </body>
 
